@@ -1,6 +1,5 @@
 package com.sense;
 
-import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 
 
@@ -19,6 +18,7 @@ public class Launch {
 //		Event event_editor = openEditor();
 		
 		Thread.sleep(2000);    /* To Make sure the VNCThread is created */
+		System.out.println("Note: time of initialization 2 secs");
 		
 		server.getHandler("VM3").addService(event_browser);
 		server.getHandler("VM2").addService(event_openNotePad);
@@ -30,7 +30,8 @@ public class Launch {
 
 	private static Event openNotePad_win7() {
 		Event event = new Event();
-		ClickCommand clickcmd1 = new ClickCommand("image/chrome_icon_line.png", "image/search_icon_showup.png");
+//		ClickCommand clickcmd1 = new ClickCommand("image/window_icon.png", "image/search_icon_showup.png");
+		ClickCommand clickcmd1 = new ClickCommand("image/trash_icon.png", "image/search_icon_showup.png");
 		TypeCommand typecmd1 = new TypeCommand("notepad");
 		ClickCommand clickcmd2 = new ClickCommand("image/notepad_in_search.png", "image/notepad_showup.png");
 		TypeCommand typecmd2 = new TypeCommand("This is OpenNotepad Test case in Win7\n");

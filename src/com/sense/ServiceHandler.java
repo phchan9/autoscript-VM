@@ -29,6 +29,7 @@ public class ServiceHandler implements Runnable{
 			Thread.sleep(500);
 			doService();
 		} catch (FindFailed e) {
+			System.out.println("Error: "+ e);
 //			e.printStackTrace();
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block

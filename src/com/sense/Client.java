@@ -23,12 +23,11 @@ public class Client {
 		this.port = port;
 		try {
 			this.socket = new Socket(ip, port);
-		} catch (UnknownHostException e) {
-			System.out.println("Error: UnknownHostException!");
-			e.printStackTrace();
+
 		} catch (IOException e) {
-			System.out.println("Error: Socket connection Failed!");
-			e.printStackTrace();
+			System.out.println("Error: Host "+ this.hostname + "'s Socket open failed : "+ e.getMessage());
+//			e.printStackTrace();
+			System.exit(-1);
 		}
 	}
 	

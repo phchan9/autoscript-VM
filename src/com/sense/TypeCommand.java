@@ -56,7 +56,13 @@ public class TypeCommand extends Command implements Executable {
 			Debug.log(3, "Ignore the response check\n");
 			return;
 		}else{
-			screen.wait(check, 3.0);
+			
+			try {
+				screen.wait(check, 3.0);
+			} catch (FindFailed e) {
+				// TODO Auto-generated catch block
+				throw new FindFailed( "@FeedBackFunction() in "+ client.hostname + " " + e.getMessage());
+			}
 		}
 	}
 	
