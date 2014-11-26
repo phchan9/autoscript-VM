@@ -1,44 +1,54 @@
 package com.sense;
 
+import java.awt.RenderingHints.Key;
 import java.awt.event.KeyEvent;
 
-import org.sikuli.script.FindFailed;
 
 public class Launch {
 
 	public static void main(String[] args) throws InterruptedException {
 		Server server = new Server();
-		ServiceHandler handler = new ServiceHandler();
 		Client vm3 =  new Client( "VM3", "localhost", 5902);
+		Client vm2 =  new Client( "VM2", "localhost", 5901);
 		server.newConnection(vm3);
+		server.newConnection(vm2);
 		server.initClientScreens();
-		Event event_browser = openBrowser(vm3);
-//		Event event_combo = Control_Alt_Del_Combo(vm3);
-//		Event event_editor = openEditor(vm3);
+		Event event_browser = openBrowser();
+		Event event_openNotePad = openNotePad_win7();
+//		Event event_combo = Control_Alt_Del_Combo();
+//		Event event_editor = openEditor();
 		
 		Thread.sleep(2000);    /* To Make sure the VNCThread is created */
 		
-		handler.addService(event_browser);
-//		handler.addService(event_combo);
-//		handler.addService(event_editor);
-		try {
-			handler.doService();
-		} catch (FindFailed e) {
-			
-			e.printStackTrace();
-		}
+		server.getHandler("VM3").addService(event_browser);
+		server.getHandler("VM2").addService(event_openNotePad);
+		
+		server.doService();
 		server.closeConnection("VM3");
+		server.closeConnection("VM2");
 	}
 
-	private static Event openEditor(Client vm){
+	private static Event openNotePad_win7() {
+		Event event = new Event();
+		ClickCommand clickcmd1 = new ClickCommand("image/chrome_icon_line.png", "image/search_icon_showup.png");
+		TypeCommand typecmd1 = new TypeCommand("notepad");
+		ClickCommand clickcmd2 = new ClickCommand("image/notepad_in_search.png", "image/notepad_showup.png");
+		TypeCommand typecmd2 = new TypeCommand("This is OpenNotepad Test case in Win7\n");
+		event.addCommand(clickcmd1);
+		event.addCommand(typecmd1);
+		event.addCommand(clickcmd2);
+		event.addCommand(typecmd2);
+ 		return event;
+	}
+
+	private static Event openEditor(){
 		Event event = new Event();
 		ClickCommand clickcmd = new ClickCommand(
-				vm, "image/texteditor.png", "image/notepad_showup_win8.png", MouseAction.DOUBLECLICK);
-		TypeCommand typecmd = new TypeCommand(
-				vm, "This is open Notepad test!\n");
-		WaitCommand wcmd = new WaitCommand(vm, 1.0);
-		ComboKeyCommand combocmd1 = new ComboKeyCommand(vm, null, null, KeyEvent.VK_CONTROL, KeyEvent.VK_S);
-		ComboKeyCommand combocmd2 = new ComboKeyCommand(vm, null, null, KeyEvent.VK_ALT, KeyEvent.VK_F4);
+				"image/texteditor.png", "image/notepad_showup_win8.png", MouseAction.DOUBLECLICK);
+		TypeCommand typecmd = new TypeCommand("This is open Notepad test!\n");
+		WaitCommand wcmd = new WaitCommand(1.0);
+		ComboKeyCommand combocmd1 = new ComboKeyCommand(KeyEvent.VK_CONTROL, KeyEvent.VK_S);
+		ComboKeyCommand combocmd2 = new ComboKeyCommand(KeyEvent.VK_ALT, KeyEvent.VK_F4);
 		event.addCommand(clickcmd);
 		event.addCommand(typecmd);
 		event.addCommand(wcmd);
@@ -48,21 +58,22 @@ public class Launch {
 		return event;
 	}
 	
-	private static Event openBrowser(Client vm) {
+	private static Event openBrowser() {
 		Event event = new Event();
-		TypeCommand typecommand1 = new TypeCommand(vm, "Youtube\n");
+		TypeCommand typecommand1 = new TypeCommand("Youtube\n");
 		typecommand1.setFocuspoint("image/focus_url_pos.png");
+//		event.addCommand(
+//				new ClickCommand("image/chrome_icon_win8.png", MouseAction.DOUBLECLICK));
 		event.addCommand(
-				new ClickCommand( vm, "image/chrome_icon_win8.png", MouseAction.DOUBLECLICK));
+				new ClickCommand("image/chrome_icon_line.png"));
 		
 		event.addCommand(typecommand1);
 		return event;
 	}
 	
-	private static Event Control_Alt_Del_Combo(Client vm){
+	private static Event Control_Alt_Del_Combo(){
 		Event event = new Event();
-		ComboKeyCommand combo = new ComboKeyCommand(vm, null, null);
-		combo.addComboKey(KeyEvent.VK_CONTROL, KeyEvent.VK_ALT, KeyEvent.VK_DELETE);
+		ComboKeyCommand combo = new ComboKeyCommand(KeyEvent.VK_CONTROL, KeyEvent.VK_ALT, KeyEvent.VK_DELETE);
 		event.addCommand(combo);
 		return event;
 	}

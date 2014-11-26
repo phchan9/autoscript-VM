@@ -13,14 +13,14 @@ public class Event implements Executable{
 	}
 	
 	@Override
-	public void execute() throws FindFailed {
+	public void execute(Client client) throws FindFailed {
 		for(Executable command : commands){
-			command.execute();
+			command.execute(client);
 		}
 	}
 
 	@Override
-	public void feedBackCheck() throws FindFailed {
+	public void feedBackCheck(Client client) throws FindFailed {
 		// TODO Auto-generated method stub
 		
 	}

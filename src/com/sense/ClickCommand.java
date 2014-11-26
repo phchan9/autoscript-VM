@@ -12,25 +12,24 @@ public class ClickCommand extends Command implements Executable {
 	protected int modifier = 0;
 	protected MouseAction type = MouseAction.CLICK;
 	
-	public ClickCommand(Client client, String target) {
-		super(client, target);
+	public ClickCommand(String target, String check, MouseAction type) {
+		super(target, check);
+		this.type = type;
 	}
 	
-	public ClickCommand(Client client, String target, MouseAction type) {
-		super(client, target);
+	public ClickCommand(String target, MouseAction type) {
+		super(target);
 		this.type = type;
 	}
-
-	public ClickCommand(Client client, String target, String check, MouseAction type) {
-		super(client, target, check);
-		this.type = type;
+	
+	public ClickCommand(String target, String check) {
+		super(target, check);
+		// TODO Auto-generated constructor stub
 	}
 
-	public ClickCommand(Client client, String target, String check,
-			MouseAction type, int modifier) {
-		super(client, target, check);
-		this.modifier = modifier;
-		this.type = type;
+	public ClickCommand(String target) {
+		super(target);
+		// TODO Auto-generated constructor stub
 	}
 
 	public int getModifier() {
@@ -50,7 +49,7 @@ public class ClickCommand extends Command implements Executable {
 	}
 
 	@Override
-	public void execute() throws FindFailed {
+	public void execute(Client client) throws FindFailed {
 		VNCScreen screen = (VNCScreen) client.getScreen();
 		switch(type){
 			case CLICK:
@@ -63,11 +62,11 @@ public class ClickCommand extends Command implements Executable {
 				screen.doubleClick(target, modifier);
 				break;
 		}
-		feedBackCheck();
+		feedBackCheck(client);
 	}
 
 	@Override
-	public void feedBackCheck() throws FindFailed {
+	public void feedBackCheck(Client client) throws FindFailed {
 		VNCScreen screen = (VNCScreen) client.getScreen();
 
 		if( check == null){

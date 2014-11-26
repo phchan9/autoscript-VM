@@ -11,20 +11,19 @@ public class TypeCommand extends Command implements Executable {
 	protected int modifier = 0;
 	protected String focuspoint = null;
 	
-	public TypeCommand(Client client, String target) {
-		super(client, target);
+	public TypeCommand(String target, String check, String focuspoint) {
+		super(target, check);
+		this.focuspoint = focuspoint;
+	}
+
+	public TypeCommand(String target, String check) {
+		super(target, check);
 		// TODO Auto-generated constructor stub
 	}
 
-	public TypeCommand(com.sense.Client client, String target, String check) {
-		super(client, target, check);
+	public TypeCommand(String target) {
+		super(target);
 		// TODO Auto-generated constructor stub
-	}
-
-	public TypeCommand(com.sense.Client client, String target, String check, int modifier) {
-		super(client, target);
-		this.modifier = modifier;
-		this.check = check;
 	}
 
 	public int getModifier() {
@@ -44,14 +43,14 @@ public class TypeCommand extends Command implements Executable {
 	}
 
 	@Override
-	public void execute() throws FindFailed {
+	public void execute(Client client) throws FindFailed {
 		VNCScreen screen = (VNCScreen) client.getScreen();
 		screen.type(focuspoint, target, modifier);
-		feedBackCheck();
+		feedBackCheck(client);
 	}
 
 	@Override
-	public void feedBackCheck() throws FindFailed {
+	public void feedBackCheck(Client client) throws FindFailed {
 		VNCScreen screen = (VNCScreen) client.getScreen();
 		if( check == null){
 			Debug.log(3, "Ignore the response check\n");

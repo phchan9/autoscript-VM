@@ -1,6 +1,7 @@
 package com.sense;
 
 import java.net.Socket;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -21,6 +22,7 @@ public class Server extends ConnectionController{
 	int index = 0;
     private Map<String, Client> clients= new HashMap<>();
     private Map<String, Integer> books = new HashMap<>();
+    private Map<String, ServiceHandler> handlers = new HashMap<>();
     
 	public Server() {
 		super();
@@ -31,6 +33,7 @@ public class Server extends ConnectionController{
 		Socket soc = vm.getSocket();
 		clients.put(vm.hostname, vm);
 		books.put(vm.hostname, index);
+		handlers.put(vm.hostname, new ServiceHandler(vm));
 		super.newConnection(soc);
 		super.openConnection(index);
 		super.setPixelFormat(index, "Truecolor", 32, 0);
@@ -51,6 +54,14 @@ public class Server extends ConnectionController{
 		}
 	}
 	
+	public ServiceHandler getHandler(String name_vm) {
+		return handlers.get(name_vm);
+	}
+	
+	public ServiceHandler getHandler(Client vm){
+		return handlers.get(vm.hostname);
+	}
+
 	public Client getClient(String name){
 		return clients.get(name);
 	}
@@ -61,6 +72,30 @@ public class Server extends ConnectionController{
 		super.closeConnection(victim);
 		clients.remove(name_vm);
 		books.remove(name_vm);
+		handlers.remove(name_vm);
 	}
-	
+
+	public void doService(){
+		
+		ArrayList<Thread> threads = new ArrayList<>();
+		
+		for(String name : handlers.keySet()){
+			Thread handle = new Thread(handlers.get(name));
+			threads.add(handle);
+			handle.start();
+		}
+		
+		for(Thread thread : threads){
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				System.out.println("Error: Unexpectedly Interrupted!");
+				e.printStackTrace();
+			}
+		}
+		
+		System.out.println("Info: all works are done!\n");
+		
+	}
 }
