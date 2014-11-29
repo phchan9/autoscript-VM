@@ -17,20 +17,21 @@ public class Launch {
 		Event event_openNotePad_win8 = openEditor();
 		Event event_nslookup = nsLookup();
 		
-		Thread.sleep(2000);    /* To Make sure the VNCThread is created */
 		System.out.println("Note: time of initialization 2 secs");
+		Thread.sleep(2000);    /* To Make sure the VNCThread is created */
 		
 //		server.getHandler("VM3").addService(event_openNotePad_win8);
 //		server.getHandler("VM3").addService(event_nslookup);
-		server.getHandler("VM2").addService(wget_malware());
+		server.getHandler("VM2").addService(openNotePad_win7());
 		
-		
+		System.out.println("====This is test=====");
 		server.doService();
 		server.listConnection();
 		server.closeConnection("VM3");
 		server.closeConnection("VM2");
+		server.closeAllConnection();
 		server.listConnection();
-		
+		System.exit(0);
 		
 //		Client vm2 =  new Client( "VM2", "localhost", 5901);
 //		server.newConnection(vm2);
@@ -54,6 +55,7 @@ public class Launch {
 		event.addCommand(clickcmd3);
 		event.addCommand(clickcmd4);
 		event.addCommand(clickcmd5);
+		
 		
 		return event;
 	}

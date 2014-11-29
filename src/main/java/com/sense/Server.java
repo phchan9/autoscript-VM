@@ -69,6 +69,12 @@ public class Server extends ConnectionController{
 		return clients.get(name);
 	}
 	
+	public void closeAllConnection(){
+		for(String name_vm: clients.keySet()){
+			closeConnection(name_vm);
+		}
+	}
+	
 	public void closeConnection(String name_vm){
 		Client vm = clients.get(name_vm);
 		int victim = threads.indexOf(vm.getThread());
@@ -80,11 +86,7 @@ public class Server extends ConnectionController{
 	
 	public void closeConnection(Client vm){
 		String name_vm = vm.hostname;
-		int victim = threads.indexOf(vm.getThread());
-		super.closeConnection(victim);
-		clients.remove(name_vm);
-		books.remove(name_vm);
-		handlers.remove(name_vm);
+		closeConnection(name_vm);
 	}
 	
 	public void listConnection(){
