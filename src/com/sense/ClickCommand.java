@@ -66,14 +66,19 @@ public class ClickCommand extends Command implements Executable {
 	}
 
 	@Override
-	public void feedBackCheck(Client client) throws FindFailed {
+	public void feedBackCheck(Client client) throws FindFailed  {
 		VNCScreen screen = (VNCScreen) client.getScreen();
 
 		if( check == null){
 			Debug.log(3, "Ignore the response check\n");
 			return ;
 		}
-		screen.wait(check, 3.0);
+		try {
+			screen.wait(check);
+		} catch (FindFailed e) {
+			// TODO Auto-generated catch block
+			throw new FindFailed( "@FeedBackFunction() in "+ client.hostname + " " + e.getMessage());
+		}
 		
 	}
 

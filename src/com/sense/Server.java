@@ -47,10 +47,13 @@ public class Server extends ConnectionController{
 		
 		int idx_client = 0;
 		Client vm;
+		VNCScreen screen;
 		for(String name : clients.keySet()){
 			idx_client = books.get(name);
 			vm = clients.get(name);
-			vm.setScreen(VNCScreen.getScreen(idx_client));
+			screen = VNCScreen.getScreen(idx_client);
+			screen.setAutoWaitTimeout(40.0);    /* make longer timeout to ensure feedbackcheck*/
+			vm.setScreen(screen);
 		}
 	}
 	
@@ -74,7 +77,27 @@ public class Server extends ConnectionController{
 		books.remove(name_vm);
 		handlers.remove(name_vm);
 	}
-
+	
+	public void closeConnection(Client vm){
+		String name_vm = vm.hostname;
+		int victim = threads.indexOf(vm.getThread());
+		super.closeConnection(victim);
+		clients.remove(name_vm);
+		books.remove(name_vm);
+		handlers.remove(name_vm);
+	}
+	
+	public void listConnection(){
+		System.out.println("Info of Connections:");
+		if(clients.isEmpty()){
+			System.out.println("\tAll connection is closed!");
+		}else{
+			for(String name: clients.keySet()){
+				Client vm = clients.get(name);
+				System.out.println("\thost "+ vm.hostname+" "+ vm.getIp()+" "+vm.getPort());
+			}
+		}
+	}
 	public void doService(){
 		
 		ArrayList<Thread> threads = new ArrayList<>();

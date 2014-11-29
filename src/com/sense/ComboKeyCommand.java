@@ -60,7 +60,7 @@ public class ComboKeyCommand extends Command implements Executable {
 			return;
 		}
 		try {
-			screen.wait(check, 3.0);
+			screen.wait(check);
 		} catch (FindFailed e) {
 			// TODO Auto-generated catch block
 			throw new FindFailed( "@FeedBackFunction() in "+ client.hostname + " " + e.getMessage());
