@@ -71,8 +71,14 @@ public class Server extends ConnectionController{
 	
 	public void closeAllConnection(){
 		for(String name_vm: clients.keySet()){
-			closeConnection(name_vm);
+			Client vm = clients.get(name_vm);
+			int victim = threads.indexOf(vm.getThread());
+			super.closeConnection(victim);
+			//clients.remove(name_vm);   /* makes iterator work */
+			books.remove(name_vm);
+			handlers.remove(name_vm);
 		}
+		clients.clear();
 	}
 	
 	public void closeConnection(String name_vm){

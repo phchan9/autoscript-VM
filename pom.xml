@@ -30,6 +30,20 @@
           <mainClass>com.sense.Launch</mainClass>
         </configuration>
       </plugin>
+      <plugin>
+       <artifactId>maven-assembly-plugin</artifactId>
+        <configuration>
+          <descriptorRefs>
+            <descriptorRef>jar-with-dependencies</descriptorRef>
+          </descriptorRefs>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
+  <parent>
+  	<groupId>com.sense</groupId>
+  	<artifactId>secmon_automate</artifactId>
+  	<version>1.0</version>
+  	<relativePath>../</relativePath>
+  </parent>
 </project>

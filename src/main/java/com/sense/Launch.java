@@ -1,34 +1,31 @@
 package com.sense;
 
 import java.awt.event.KeyEvent;
-
+import org.sikuli.script.ImagePath;
 
 public class Launch {
 
 	public static void main(String[] args) throws InterruptedException {
 		Server server = new Server();
 		Client vm3 =  new Client( "VM3", "localhost", 5902);
-		Client vm2 =  new Client( "VM2", "localhost", 5901);
-		Client vm1 =  new Client( "VM1", "localhost", 5900);
+//		Client vm2 =  new Client( "VM2", "localhost", 5901);
+//		Client vm1 =  new Client( "VM1", "localhost", 5900);
 		server.newConnection(vm3);
-		server.newConnection(vm2);
-		server.newConnection(vm1);
+//		server.newConnection(vm2);
+//		server.newConnection(vm1);
+//		ImagePath.add("com.sense.Launch");
+//		System.out.println("[*]"+ImagePath.getPaths());
 		server.initClientScreens();
-		Event event_openNotePad_win8 = openEditor();
-		Event event_nslookup = nsLookup();
 		
 		System.out.println("Note: time of initialization 2 secs");
 		Thread.sleep(2000);    /* To Make sure the VNCThread is created */
 		
 //		server.getHandler("VM3").addService(event_openNotePad_win8);
-//		server.getHandler("VM3").addService(event_nslookup);
-		server.getHandler("VM2").addService(openNotePad_win7());
+//		server.getHandler("VM3").addService(nsLookup());
+		server.getHandler("VM3").addService(openBrowser());
+//		server.getHandler("VM2").addService(wget_malware());
 		
-		System.out.println("====This is test=====");
 		server.doService();
-		server.listConnection();
-		server.closeConnection("VM3");
-		server.closeConnection("VM2");
 		server.closeAllConnection();
 		server.listConnection();
 		System.exit(0);
@@ -84,10 +81,11 @@ public class Launch {
  		return event;
 	}
 
-	private static Event openEditor(){
+	private static Event openNotePad_win8(){
 		Event event = new Event();
-		ClickCommand clickcmd = new ClickCommand(
-				"image/texteditor.png", "image/notepad_showup_win8.png", MouseAction.DOUBLECLICK);
+//		ClickCommand clickcmd = new ClickCommand(
+//				"image/texteditor.png", "image/notepad_showup_win8.png", MouseAction.DOUBLECLICK);
+		ClickCommand clickcmd = new ClickCommand("image/test@202.png", MouseAction.DOUBLECLICK);
 		TypeCommand typecmd = new TypeCommand("This is open Notepad test!\n");
 		WaitCommand wcmd = new WaitCommand(1.0);
 		ComboKeyCommand combocmd1 = new ComboKeyCommand(KeyEvent.VK_CONTROL, KeyEvent.VK_S);
