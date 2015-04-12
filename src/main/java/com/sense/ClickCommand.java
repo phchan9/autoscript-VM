@@ -12,6 +12,13 @@ public class ClickCommand extends Command implements Executable {
 	protected int modifier = 0;
 	protected MouseAction type = MouseAction.CLICK;
 	
+	/** 
+	 * Constructors of ClickCommand
+	 * 
+	 * @param target  the filename of the images which will be clicked
+	 * @param check  the filename of the images which will be checked for response
+	 * @param type  Doubleclick, RightClick, (Left)Click  
+	 */
 	public ClickCommand(String target, String check, MouseAction type) {
 		super(target, check);
 		this.type = type;
@@ -35,7 +42,11 @@ public class ClickCommand extends Command implements Executable {
 	public int getModifier() {
 		return modifier;
 	}
-
+	
+	/**
+	 * Set the modifer which key will be pressed when you click the image at the same time
+	 * @param modifier  like Control,Shift, Alt
+	 */
 	public void setModifier(int modifier) {
 		this.modifier = modifier;
 	}

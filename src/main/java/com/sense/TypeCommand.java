@@ -11,6 +11,12 @@ public class TypeCommand extends Command implements Executable {
 	protected int modifier = 0;
 	protected String focuspoint = null;
 	
+	/**
+	 * The Constructors of TypeCommand 
+	 * @param target  the string you expect to type 
+	 * @param check  the filename of the image which will be checked for response
+	 * @param focuspoint  the point you click before you type the sring
+	 */
 	public TypeCommand(String target, String check, String focuspoint) {
 		super(target, check);
 		this.focuspoint = focuspoint;

@@ -6,6 +6,7 @@ import org.sikuli.script.IRobot;
 
 import edu.unh.iol.dlc.VNCScreen;
 
+import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 
 
@@ -13,6 +14,14 @@ public class ComboKeyCommand extends Command implements Executable {
 
 	protected ArrayList<Integer> combos = new ArrayList<Integer>();
 	
+	/**
+	 * This class is used to press several keys meanwhile e.g. Contorl+Alt+Del
+	 * 
+	 * The Constructors of ComboKeyCommand 
+	 * @param target  null often
+	 * @param check  the filename of the image which will be checked for response
+	 * @param keys  several keys to press, using Key library of java e.g. KeyEvent.VK_CONTROL
+	 */
 	public ComboKeyCommand(String target, String check, int... keys ) {
 		super(target, check);
 		this.addComboKey(keys);
